@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Hospital, UserLocation, UserPreferences } from "@/types";
 import { hospitals } from "@/data/hospitals";
 import { filterHospitals, sortHospitals, getUniqueSpecialties, getUniqueLocations } from "@/utils/hospitalUtils";
@@ -56,11 +55,7 @@ const HospitalFinder: React.FC = () => {
 
   const detectUserLocation = () => {
     if (!navigator.geolocation) {
-      toast({
-        title: "Error",
-        description: "Geolocation is not supported by your browser",
-        variant: "destructive",
-      });
+      toast.error("Geolocation is not supported by your browser");
       return;
     }
     
@@ -73,18 +68,11 @@ const HospitalFinder: React.FC = () => {
           lng: position.coords.longitude,
           address: "Your location"
         });
-        toast({
-          title: "Success",
-          description: "Your location has been detected",
-        });
+        toast.success("Your location has been detected");
         setIsLoadingLocation(false);
       },
       error => {
-        toast({
-          title: "Error",
-          description: `Failed to get your location: ${error.message}`,
-          variant: "destructive",
-        });
+        toast.error(`Failed to get your location: ${error.message}`);
         setIsLoadingLocation(false);
       }
     );
