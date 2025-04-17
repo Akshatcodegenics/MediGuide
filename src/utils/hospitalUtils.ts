@@ -1,4 +1,3 @@
-
 import { Hospital, UserPreferences, UserLocation } from "@/types";
 
 export const calculateDistance = (
@@ -44,6 +43,13 @@ export const filterHospitals = (
   if (preferences.specialty && preferences.specialty !== "All") {
     filteredHospitals = filteredHospitals.filter(hospital => 
       hospital.specialties.some(s => s.toLowerCase() === preferences.specialty.toLowerCase())
+    );
+  }
+  
+  // Filter by category
+  if (preferences.category && preferences.category !== "all") {
+    filteredHospitals = filteredHospitals.filter(hospital => 
+      hospital.category === preferences.category
     );
   }
   

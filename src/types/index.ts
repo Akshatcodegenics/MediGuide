@@ -8,6 +8,16 @@ export interface Hospital {
   fees: number; // in INR
   rating: number;
   distance?: number; // in km
+  category: 'government' | 'private'; // Added category field
+  address?: string;
+  contact?: string;
+  email?: string;
+  website?: string;
+  appointmentSteps?: string[];
+  estimatedCost?: {
+    min: number;
+    max: number;
+  };
 }
 
 export interface Procedure {
@@ -31,4 +41,14 @@ export type UserPreferences = {
   maxFees: number | null;
   maxDistance: number | null;
   maxWaitTime: number | null;
+  category?: 'all' | 'government' | 'private';
 };
+
+export interface NearbyPlace {
+  id: number;
+  name: string;
+  type: 'pharmacy' | 'hotel' | 'food';
+  rating: number;
+  distance: number;
+  address: string;
+}

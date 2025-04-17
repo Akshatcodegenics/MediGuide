@@ -1,8 +1,10 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Clock, DollarSign, Star } from "lucide-react";
+import { MapPin, Clock, DollarSign, Star, Building, Building2 } from "lucide-react";
 import { Hospital } from "@/types";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface HospitalListProps {
   hospitals: Hospital[];
@@ -11,17 +13,42 @@ interface HospitalListProps {
 const HospitalList: React.FC<HospitalListProps> = ({ hospitals }) => {
   if (hospitals.length === 0) {
     return (
-      <div className="text-center py-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.5 }}
+        className="text-center py-8"
+      >
         <p className="text-gray-500">No hospitals found matching your criteria.</p>
         <p className="text-gray-500">Try adjusting your filters for more results.</p>
-      </div>
+      </motion.div>
     );
   }
 
-  return (
-    <div className="grid grid-cols-1 gap-4">
-      {hospitals.map((hospital) => (
-        <Card key={hospital.id} className="hover:shadow-lg transition-shadow">
+  // Group hospitals by category
+  const governmentHospitals = hospitals.filter(hospital => hospital.category === "government");
+  const privateHospitals = hospitals.filter(hospital => hospital.category === "private");
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
+  // Function to render hospital card
+  const renderHospitalCard = (hospital: Hospital, index: number) => (
+    <motion.div key={hospital.id} variants={item}>
+      <Link to={`/hospital/${hospital.id}`} className="block">
+        <Card className="hover:shadow-lg transition-shadow transform hover:-translate-y-1 transition-transform duration-300">
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start">
               <CardTitle className="text-xl">{hospital.name}</CardTitle>
@@ -68,7 +95,45 @@ const HospitalList: React.FC<HospitalListProps> = ({ hospitals }) => {
             </div>
           </CardContent>
         </Card>
-      ))}
+      </Link>
+    </motion.div>
+  );
+
+  return (
+    <div className="space-y-8">
+      {governmentHospitals.length > 0 && (
+        <div>
+          <div className="flex items-center mb-4 text-xl font-semibold">
+            <Building2 className="w-5 h-5 mr-2 text-blue-600" />
+            <h2>Government Hospitals</h2>
+          </div>
+          <motion.div 
+            className="grid grid-cols-1 gap-4"
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
+            {governmentHospitals.map(renderHospitalCard)}
+          </motion.div>
+        </div>
+      )}
+
+      {privateHospitals.length > 0 && (
+        <div>
+          <div className="flex items-center mb-4 text-xl font-semibold">
+            <Building className="w-5 h-5 mr-2 text-purple-600" />
+            <h2>Private Hospitals</h2>
+          </div>
+          <motion.div 
+            className="grid grid-cols-1 gap-4"
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
+            {privateHospitals.map(renderHospitalCard)}
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

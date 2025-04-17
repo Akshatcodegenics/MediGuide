@@ -1,4 +1,3 @@
-
 import { Hospital } from "@/types";
 
 export const hospitals: Hospital[] = [
@@ -10,6 +9,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 45,
     fees: 1500,
     rating: 4.7,
+    category: "private",
+    address: "Sarita Vihar, Delhi-Mathura Road, New Delhi, Delhi 110076",
+    contact: "+91-11-2692-5858",
+    email: "info@apollohospitals.com",
+    website: "www.apollohospitals.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1500,
+      max: 25000
+    }
   },
   {
     id: 2,
@@ -19,6 +35,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 30,
     fees: 1800,
     rating: 4.5,
+    category: "private",
+    address: "Mulund Goregaon Link Road, Mumbai, Maharashtra 400078",
+    contact: "+91-22-4925-4925",
+    email: "enquiries@fortishealthcare.com",
+    website: "www.fortishealthcare.com",
+    appointmentSteps: [
+      "Call the hospital appointment helpline",
+      "Provide your personal details and medical concern",
+      "Select your preferred doctor or let them assign one",
+      "Choose from available appointment slots",
+      "Confirm your appointment",
+      "Arrive 30 minutes before your scheduled time"
+    ],
+    estimatedCost: {
+      min: 1800,
+      max: 30000
+    }
   },
   {
     id: 3,
@@ -28,6 +61,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 60,
     fees: 1200,
     rating: 4.6,
+    category: "private",
+    address: "Delhi, India",
+    contact: "+91-11-2692-5858",
+    email: "info@maxhospitals.com",
+    website: "www.maxhospitals.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1200,
+      max: 25000
+    }
   },
   {
     id: 4,
@@ -37,6 +87,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 40,
     fees: 2000,
     rating: 4.8,
+    category: "private",
+    address: "Gurugram, India",
+    contact: "+91-120-2692-5858",
+    email: "info@medanta.com",
+    website: "www.medanta.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 2000,
+      max: 25000
+    }
   },
   {
     id: 5,
@@ -46,6 +113,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 90,
     fees: 200,
     rating: 4.4,
+    category: "government",
+    address: "Ansari Nagar East, New Delhi, Delhi 110029",
+    contact: "+91-11-2658-8500",
+    email: "info@aiims.edu",
+    website: "www.aiims.edu",
+    appointmentSteps: [
+      "Register on AIIMS online portal or in person",
+      "Obtain a UHID (Unique Hospital ID) number",
+      "Book an appointment through the online system",
+      "Pay the registration fee (Rs 10 for general category)",
+      "Receive appointment slip with date and time",
+      "Bring all medical records and government ID on appointment day"
+    ],
+    estimatedCost: {
+      min: 10,
+      max: 5000
+    }
   },
   {
     id: 6,
@@ -55,6 +139,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 35,
     fees: 1700,
     rating: 4.6,
+    category: "private",
+    address: "Mumbai, India",
+    contact: "+91-22-4925-4925",
+    email: "info@lilavati.com",
+    website: "www.lilavati.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1700,
+      max: 25000
+    }
   },
   {
     id: 7,
@@ -64,6 +165,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 50,
     fees: 2200,
     rating: 4.7,
+    category: "private",
+    address: "Mumbai, India",
+    contact: "+91-22-4925-4925",
+    email: "info@kakilaben.com",
+    website: "www.kakilaben.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 2200,
+      max: 25000
+    }
   },
   {
     id: 8,
@@ -73,6 +191,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 40,
     fees: 1300,
     rating: 4.5,
+    category: "private",
+    address: "Bangalore, India",
+    contact: "+91-80-2692-5858",
+    email: "info@manipal.com",
+    website: "www.manipal.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1300,
+      max: 25000
+    }
   },
   {
     id: 9,
@@ -82,6 +217,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 55,
     fees: 1000,
     rating: 4.4,
+    category: "private",
+    address: "Bangalore, India",
+    contact: "+91-80-2692-5858",
+    email: "info@narayanahealth.com",
+    website: "www.narayanahealth.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1000,
+      max: 25000
+    }
   },
   {
     id: 10,
@@ -91,6 +243,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 75,
     fees: 800,
     rating: 4.7,
+    category: "private",
+    address: "Mumbai, India",
+    contact: "+91-22-4925-4925",
+    email: "info@tatamemorial.com",
+    website: "www.tatamemorial.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 800,
+      max: 25000
+    }
   },
   {
     id: 11,
@@ -100,6 +269,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 65,
     fees: 900,
     rating: 4.6,
+    category: "private",
+    address: "Vellore, India",
+    contact: "+91-91-2692-5858",
+    email: "info@christianmedicalcollege.com",
+    website: "www.christianmedicalcollege.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 900,
+      max: 25000
+    }
   },
   {
     id: 12,
@@ -109,6 +295,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 30,
     fees: 1700,
     rating: 4.5,
+    category: "private",
+    address: "Gurugram, India",
+    contact: "+91-120-2692-5858",
+    email: "info@artemis.com",
+    website: "www.artemis.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1700,
+      max: 25000
+    }
   },
   {
     id: 13,
@@ -118,6 +321,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 60,
     fees: 1400,
     rating: 4.6,
+    category: "private",
+    address: "Delhi, India",
+    contact: "+91-11-2692-5858",
+    email: "info@sgrahram.com",
+    website: "www.sgrahram.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1400,
+      max: 25000
+    }
   },
   {
     id: 14,
@@ -127,6 +347,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 45,
     fees: 1600,
     rating: 4.5,
+    category: "private",
+    address: "Mumbai, India",
+    contact: "+91-22-4925-4925",
+    email: "info@jaslok.com",
+    website: "www.jaslok.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1600,
+      max: 25000
+    }
   },
   {
     id: 15,
@@ -136,6 +373,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 55,
     fees: 1900,
     rating: 4.7,
+    category: "private",
+    address: "Delhi, India",
+    contact: "+91-11-2692-5858",
+    email: "info@indraprasthaapollo.com",
+    website: "www.indraprasthaapollo.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1900,
+      max: 25000
+    }
   },
   {
     id: 16,
@@ -145,6 +399,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 40,
     fees: 1800,
     rating: 4.6,
+    category: "private",
+    address: "Mumbai, India",
+    contact: "+91-22-4925-4925",
+    email: "info@hinduja.com",
+    website: "www.hinduja.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1800,
+      max: 25000
+    }
   },
   {
     id: 17,
@@ -154,6 +425,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 30,
     fees: 1200,
     rating: 4.4,
+    category: "private",
+    address: "Bangalore, India",
+    contact: "+91-80-2692-5858",
+    email: "info@columbiaasia.com",
+    website: "www.columbiaasia.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1200,
+      max: 25000
+    }
   },
   {
     id: 18,
@@ -163,6 +451,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 50,
     fees: 1300,
     rating: 4.5,
+    category: "private",
+    address: "Pune, India",
+    contact: "+91-91-2692-5858",
+    email: "info@rubyhallclinic.com",
+    website: "www.rubyhallclinic.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1300,
+      max: 25000
+    }
   },
   {
     id: 19,
@@ -172,6 +477,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 35,
     fees: 1700,
     rating: 4.5,
+    category: "private",
+    address: "Mumbai, India",
+    contact: "+91-22-4925-4925",
+    email: "info@wockhardt.com",
+    website: "www.wockhardt.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1700,
+      max: 25000
+    }
   },
   {
     id: 20,
@@ -181,6 +503,23 @@ export const hospitals: Hospital[] = [
     waitingTime: 45,
     fees: 1600,
     rating: 4.6,
+    category: "private",
+    address: "Delhi, India",
+    contact: "+91-11-2692-5858",
+    email: "info@blksuper.com",
+    website: "www.blksuper.com",
+    appointmentSteps: [
+      "Visit the hospital website or call the helpline",
+      "Register with your personal and contact details",
+      "Select specialty and preferred doctor",
+      "Choose available date and time slot",
+      "Pay consultation fee online or at hospital",
+      "Receive appointment confirmation via SMS/email"
+    ],
+    estimatedCost: {
+      min: 1600,
+      max: 25000
+    }
   },
 ];
 
@@ -192,4 +531,113 @@ export const getHospitalsBySpecialty = (specialty: string) => {
 
 export const getHospitalById = (id: number) => {
   return hospitals.find(hospital => hospital.id === id);
+};
+
+// Nearby places data (pharmacies, hotels, food centers)
+export const getNearbyPlaces = (hospitalId: number, placeType: 'pharmacy' | 'hotel' | 'food'): any[] => {
+  const placesData = {
+    1: { // Apollo Hospital Delhi
+      pharmacy: [
+        {
+          id: 101,
+          name: "Apollo Pharmacy",
+          rating: 4.6,
+          distance: 0.1,
+          address: "Inside Apollo Hospital, Delhi"
+        },
+        {
+          id: 102,
+          name: "MedPlus Pharmacy",
+          rating: 4.3,
+          distance: 0.5,
+          address: "Sarita Vihar, Delhi"
+        }
+      ],
+      hotel: [
+        {
+          id: 201,
+          name: "Hotel Formule1 Delhi",
+          rating: 4.1,
+          distance: 1.2,
+          address: "Mathura Road, Delhi"
+        },
+        {
+          id: 202,
+          name: "Crowne Plaza",
+          rating: 4.7,
+          distance: 2.5,
+          address: "Okhla, Delhi"
+        }
+      ],
+      food: [
+        {
+          id: 301,
+          name: "Hospital Cafeteria",
+          rating: 3.9,
+          distance: 0,
+          address: "Inside Apollo Hospital, Delhi"
+        },
+        {
+          id: 302,
+          name: "Subway",
+          rating: 4.2,
+          distance: 0.8,
+          address: "Sarita Vihar Market, Delhi"
+        }
+      ]
+    },
+    5: { // AIIMS Delhi
+      pharmacy: [
+        {
+          id: 103,
+          name: "AIIMS Pharmacy",
+          rating: 4.4,
+          distance: 0,
+          address: "Inside AIIMS, Delhi"
+        },
+        {
+          id: 104,
+          name: "Jan Aushadhi Kendra",
+          rating: 4.5,
+          distance: 0.3,
+          address: "Near AIIMS Gate 1, Delhi"
+        }
+      ],
+      hotel: [
+        {
+          id: 203,
+          name: "Hotel Taj Palace",
+          rating: 4.8,
+          distance: 3.5,
+          address: "Diplomatic Enclave, Delhi"
+        },
+        {
+          id: 204,
+          name: "Yatri Niwas",
+          rating: 3.9,
+          distance: 1.0,
+          address: "AIIMS Road, Delhi"
+        }
+      ],
+      food: [
+        {
+          id: 303,
+          name: "AIIMS Cafeteria",
+          rating: 3.7,
+          distance: 0,
+          address: "Inside AIIMS, Delhi"
+        },
+        {
+          id: 304,
+name: "Sagar Ratna",
+          rating: 4.3,
+          distance: 0.6,
+          address: "Green Park, Delhi"
+        }
+      ]
+    }
+  };
+  
+  // Return mock data for demonstration (in a real app, this would come from an API)
+  return placesData[hospitalId]?.[placeType] || [];
 };
