@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Hospital } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Send, X, Minimize2, Maximize2, Bot, Language, Mic, Users, ChevronRight } from "lucide-react";
+import { MessageCircle, Send, X, Minimize2, Maximize2, Bot, Languages, Mic, Users, ChevronRight } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 
@@ -282,7 +282,7 @@ The consultation fee starts at ₹${hospital.fees}. Would you like me to help yo
                   {/* Language selector */}
                   <div className="border-b border-gray-100 p-2 bg-gray-50 flex justify-between items-center">
                     <div className="flex items-center">
-                      <Language size={16} className="text-gray-500 mr-1" />
+                      <Languages size={16} className="text-gray-500 mr-1" />
                       <span className="text-xs text-gray-600">
                         {supportedLanguages.find(lang => lang.code === activeLanguage)?.name || "English"}
                       </span>
