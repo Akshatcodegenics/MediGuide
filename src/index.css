@@ -99,3 +99,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styles for Mapbox */
+.mapboxgl-popup {
+  max-width: 300px !important;
+}
+
+.custom-popup .mapboxgl-popup-content {
+  padding: 0;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+.mapboxgl-ctrl-bottom-right {
+  margin-bottom: 1rem !important;
+  margin-right: 1rem !important;
+}
+
+.mapboxgl-ctrl-bottom-left {
+  margin-bottom: 1rem !important;
+  margin-left: 1rem !important;
+}
