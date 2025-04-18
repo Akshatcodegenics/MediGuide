@@ -10,13 +10,14 @@ import { ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Import our new components
+// Import our components
 import { HospitalHeader } from "@/components/hospital-detail/HospitalHeader";
 import { InfoTab } from "@/components/hospital-detail/InfoTab";
 import { AppointmentTab } from "@/components/hospital-detail/AppointmentTab";
 import { MapTab } from "@/components/hospital-detail/MapTab";
 import { NearbyPlacesTab } from "@/components/hospital-detail/NearbyPlacesTab";
 import { SidebarInfo } from "@/components/hospital-detail/SidebarInfo";
+import { AIChatAssistant } from "@/components/hospital-detail/AIChatAssistant";
 
 // Animation variants
 const containerVariants = {
@@ -179,6 +180,9 @@ const HospitalDetail = () => {
           <SidebarInfo hospital={hospital} />
         </motion.div>
       </motion.div>
+      
+      {/* AI Chat Assistant */}
+      {hospital && <AIChatAssistant hospital={hospital} />}
     </div>
   );
 };
