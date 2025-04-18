@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Send, Mic } from "lucide-react";
+import { Send, Mic, MicOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -11,6 +11,7 @@ interface MessageInputProps {
   onMicInput: () => void;
   onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   inputRef: React.RefObject<HTMLInputElement>;
+  isListening?: boolean;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
@@ -20,6 +21,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onMicInput,
   onKeyPress,
   inputRef,
+  isListening = false,
 }) => {
   return (
     <div className="border-t border-gray-200 p-3 bg-white">
@@ -27,10 +29,14 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-full"
+          className={`h-8 w-8 rounded-full ${isListening ? 'bg-red-100 text-red-600' : ''}`}
           onClick={onMicInput}
         >
-          <Mic size={18} className="text-gray-600" />
+          {isListening ? (
+            <MicOff size={18} className="text-red-600" />
+          ) : (
+            <Mic size={18} className="text-gray-600" />
+          )}
         </Button>
         <Input
           ref={inputRef}

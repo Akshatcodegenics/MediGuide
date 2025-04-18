@@ -32,15 +32,15 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ hospital }) =>
 
   useEffect(() => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-      recognition.current = new SpeechRecognition();
+      const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition.current = new SpeechRecognitionAPI();
       recognition.current.continuous = true;
       recognition.current.interimResults = true;
 
-      recognition.current.onresult = (event: any) => {
+      recognition.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = Array.from(event.results)
-          .map((result: any) => result[0])
-          .map(result => result.transcript)
+          .map((result: SpeechRecognitionResult) => result[0])
+          .map((result: SpeechRecognitionAlternative) => result.transcript)
           .join('');
         
         setCurrentMessage(transcript);
@@ -69,7 +69,16 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ hospital }) =>
       recognition.current?.stop();
       setIsListening(false);
     } else {
-      recognition.current?.start();
+      if (!recognition.current) {
+        toast({
+          title: "Voice Input Not Available",
+          description: "Your browser doesn't support voice recognition.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      recognition.current.start();
       setIsListening(true);
       toast({
         title: "Voice Input Active",
@@ -118,7 +127,6 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ hospital }) =>
     
     let responseContent = "I'm not sure about that. Can you ask something else about the hospital or booking appointments?";
     
-    // Enhance response matching
     const lowerCaseMessage = currentMessage.toLowerCase();
     
     if (lowerCaseMessage.includes('suggest') || lowerCaseMessage.includes('recommend')) {
@@ -139,15 +147,17 @@ Would you like more specific information about any of these hospitals?`;
       }
     }
     
-    const botMessage: Message = {
-      id: Date.now().toString(),
-      content: responseContent,
-      sender: "bot",
-      timestamp: new Date()
-    };
-    
-    setMessages(prev => [...prev, botMessage]);
-    setIsTyping(false);
+    setTimeout(() => {
+      const botMessage: Message = {
+        id: Date.now().toString(),
+        content: responseContent,
+        sender: "bot",
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, botMessage]);
+      setIsTyping(false);
+    }, 1000);
   };
   
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -268,6 +278,7 @@ Would you like more specific information about any of these hospitals?`;
                     onMicInput={toggleVoiceInput}
                     onKeyPress={handleKeyPress}
                     inputRef={inputRef}
+                    isListening={isListening}
                   />
                 </motion.div>
               )}
