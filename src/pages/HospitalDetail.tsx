@@ -41,29 +41,77 @@ const HospitalDetail = () => {
   const [hotels, setHotels] = useState<NearbyPlace[]>([]);
   const [foodPlaces, setFoodPlaces] = useState<NearbyPlace[]>([]);
   const [activeTab, setActiveTab] = useState("info");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (id) {
+      setIsLoading(true);
       const hospitalId = parseInt(id);
       const hospitalData = getHospitalById(hospitalId);
       
       if (hospitalData) {
-        setHospital(hospitalData);
-        
-        // Fetch nearby places for this hospital
-        setPharmacies(getNearbyPlaces(hospitalId, 'pharmacy'));
-        setHotels(getNearbyPlaces(hospitalId, 'hotel'));
-        setFoodPlaces(getNearbyPlaces(hospitalId, 'food'));
+        // Add a small delay to simulate API fetch for a smoother animation
+        setTimeout(() => {
+          setHospital(hospitalData);
+          
+          // Fetch nearby places for this hospital - get more items for better visuals
+          const pharmacyPlaces = getNearbyPlaces(hospitalId, 'pharmacy');
+          const hotelPlaces = getNearbyPlaces(hospitalId, 'hotel');
+          const foodSpots = getNearbyPlaces(hospitalId, 'food');
+          
+          // Make copies of the arrays to simulate more data
+          const morePharmacies = [...pharmacyPlaces, ...pharmacyPlaces.map(place => ({
+            ...place,
+            id: place.id + 100,
+            distance: place.distance + Math.random() * 2,
+            name: place.name + " Branch"
+          }))];
+          
+          const moreHotels = [...hotelPlaces, ...hotelPlaces.map(place => ({
+            ...place,
+            id: place.id + 200,
+            distance: place.distance + Math.random() * 4,
+            name: "The " + place.name
+          }))];
+          
+          const moreFoodPlaces = [...foodSpots, ...foodSpots.map(place => ({
+            ...place,
+            id: place.id + 300,
+            distance: place.distance + Math.random() * 3,
+            name: place.name + " Cafe"
+          }))];
+          
+          setPharmacies(morePharmacies);
+          setHotels(moreHotels);
+          setFoodPlaces(moreFoodPlaces);
+          setIsLoading(false);
+        }, 800);
       }
     }
   }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading hospital details...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!hospital) {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading hospital details...</p>
+          <p className="text-gray-600">Hospital not found</p>
+          <Link to="/">
+            <Button variant="outline" className="mt-4">
+              <ChevronLeft className="w-4 h-4 mr-2" />
+              Return to Hospital List
+            </Button>
+          </Link>
         </div>
       </div>
     );
