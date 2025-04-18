@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Hospital } from "@/types";
 import { motion } from "framer-motion";
@@ -18,7 +17,6 @@ export const AppointmentTab: React.FC<AppointmentTabProps> = ({ hospital }) => {
     toast({
       title: `Step ${stepIndex + 1} Details`,
       description: hospital.appointmentSteps?.[stepIndex] || "No additional information available.",
-      duration: 5000,
     });
   };
   
