@@ -521,6 +521,110 @@ export const hospitals: Hospital[] = [
       max: 25000
     }
   },
+  {
+    id: 21,
+    name: "Safdarjung Hospital",
+    location: "Delhi",
+    specialties: ["General Medicine", "Emergency Care", "Orthopedics", "Gynecology"],
+    waitingTime: 60,
+    fees: 100,
+    rating: 4.3,
+    category: "government",
+    address: "Ansari Nagar West, New Delhi, Delhi 110029",
+    contact: "+91-11-2673-0000",
+    email: "info@safdarjunghospital.gov.in",
+    website: "www.safdarjunghospital.gov.in",
+    appointmentSteps: [
+      "Visit the hospital's registration counter",
+      "Get an OPD card made",
+      "Choose department based on medical need",
+      "Get appointment slip with doctor details",
+      "Pay nominal registration fee",
+      "Wait for your turn to see the doctor"
+    ],
+    estimatedCost: {
+      min: 10,
+      max: 2000
+    }
+  },
+  {
+    id: 22,
+    name: "Ram Manohar Lohia Hospital",
+    location: "Delhi",
+    specialties: ["General Surgery", "Internal Medicine", "Pediatrics", "Psychiatry"],
+    waitingTime: 75,
+    fees: 100,
+    rating: 4.2,
+    category: "government",
+    address: "Baba Kharak Singh Marg, New Delhi, Delhi 110001",
+    contact: "+91-11-2336-5525",
+    email: "info@rmlh.gov.in",
+    website: "www.rmlh.gov.in",
+    appointmentSteps: [
+      "Arrive early morning for registration",
+      "Obtain OPD card from registration counter",
+      "Select relevant department",
+      "Pay registration fees",
+      "Get doctor appointment",
+      "Follow up as advised"
+    ],
+    estimatedCost: {
+      min: 10,
+      max: 2500
+    }
+  },
+  {
+    id: 23,
+    name: "Lady Hardinge Medical College",
+    location: "Delhi",
+    specialties: ["Obstetrics", "Gynecology", "Pediatrics", "General Medicine"],
+    waitingTime: 65,
+    fees: 50,
+    rating: 4.1,
+    category: "government",
+    address: "Shaheed Bhagat Singh Marg, New Delhi, Delhi 110001",
+    contact: "+91-11-2336-3724",
+    email: "info@lhmc.gov.in",
+    website: "www.lhmc.gov.in",
+    appointmentSteps: [
+      "Register at OPD counter",
+      "Get patient ID card",
+      "Choose speciality department",
+      "Pay nominal fee",
+      "Receive appointment slot",
+      "Visit assigned doctor"
+    ],
+    estimatedCost: {
+      min: 10,
+      max: 1500
+    }
+  },
+  {
+    id: 24,
+    name: "GB Pant Hospital",
+    location: "Delhi",
+    specialties: ["Cardiology", "Neurology", "Gastroenterology", "Nephrology"],
+    waitingTime: 70,
+    fees: 100,
+    rating: 4.3,
+    category: "government",
+    address: "1, Jawaharlal Nehru Marg, Delhi 110002",
+    contact: "+91-11-2323-2400",
+    email: "info@gbpant.gov.in",
+    website: "www.gbpant.gov.in",
+    appointmentSteps: [
+      "Get registration done at OPD",
+      "Choose specialty department",
+      "Pay registration fee",
+      "Get appointment slip",
+      "Consult with doctor",
+      "Collect prescribed medicines"
+    ],
+    estimatedCost: {
+      min: 10,
+      max: 2000
+    }
+  }
 ];
 
 export const getHospitalsBySpecialty = (specialty: string) => {
@@ -533,7 +637,18 @@ export const getHospitalById = (id: number) => {
   return hospitals.find(hospital => hospital.id === id);
 };
 
-// Nearby places data (pharmacies, hotels, food centers)
+export const getGovernmentHospitals = () => {
+  return hospitals.filter(hospital => hospital.category === "government");
+};
+
+export const getHospitalsByMaxFee = (maxFee: number) => {
+  return hospitals.filter(hospital => hospital.fees <= maxFee);
+};
+
+export const getHospitalsByMaxWaitTime = (maxWaitTime: number) => {
+  return hospitals.filter(hospital => hospital.waitingTime <= maxWaitTime);
+};
+
 export const getNearbyPlaces = (hospitalId: number, placeType: 'pharmacy' | 'hotel' | 'food'): any[] => {
   const placesData = {
     1: { // Apollo Hospital Delhi
@@ -629,7 +744,7 @@ export const getNearbyPlaces = (hospitalId: number, placeType: 'pharmacy' | 'hot
         },
         {
           id: 304,
-name: "Sagar Ratna",
+          name: "Sagar Ratna",
           rating: 4.3,
           distance: 0.6,
           address: "Green Park, Delhi"

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Mic, MicOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Hospital } from "@/types";
 import { Message } from "./types/chat";
@@ -9,8 +9,6 @@ import { LanguageSelector } from "./chat/LanguageSelector";
 import { ChatMessages } from "./chat/ChatMessages";
 import { MessageInput } from "./chat/MessageInput";
 import { SuggestedQuestions } from "./chat/SuggestedQuestions";
-
-// Mock data imports moved to constants
 import { predefinedQuestions, mockResponses, supportedLanguages } from "./constants/chatData";
 
 interface AIChatAssistantProps {
@@ -28,6 +26,57 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ hospital }) =>
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const [isListening, setIsListening] = useState(false);
+  const recognition = useRef<any>(null);
+
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      recognition.current = new SpeechRecognition();
+      recognition.current.continuous = true;
+      recognition.current.interimResults = true;
+
+      recognition.current.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0])
+          .map(result => result.transcript)
+          .join('');
+        
+        setCurrentMessage(transcript);
+      };
+
+      recognition.current.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+        toast({
+          title: "Voice Input Error",
+          description: "There was an error with voice recognition. Please try again.",
+          variant: "destructive",
+        });
+      };
+    }
+
+    return () => {
+      if (recognition.current) {
+        recognition.current.stop();
+      }
+    };
+  }, []);
+
+  const toggleVoiceInput = () => {
+    if (isListening) {
+      recognition.current?.stop();
+      setIsListening(false);
+    } else {
+      recognition.current?.start();
+      setIsListening(true);
+      toast({
+        title: "Voice Input Active",
+        description: "Speak clearly into your microphone",
+      });
+    }
+  };
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -69,34 +118,25 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ hospital }) =>
     
     let responseContent = "I'm not sure about that. Can you ask something else about the hospital or booking appointments?";
     
+    // Enhance response matching
+    const lowerCaseMessage = currentMessage.toLowerCase();
+    
+    if (lowerCaseMessage.includes('suggest') || lowerCaseMessage.includes('recommend')) {
+      responseContent = `Based on your medical needs, I can suggest these hospitals:\n
+1. ${hospital.name} - Specializing in ${hospital.specialties.join(', ')}\n
+2. AIIMS (All India Institute of Medical Sciences) - Government hospital with comprehensive care\n
+3. Safdarjung Hospital - Another excellent government option\n
+4. Ram Manohar Lohia Hospital - Known for affordable quality care\n
+Would you like more specific information about any of these hospitals?`;
+    }
+    
     for (const question of Object.keys(mockResponses)) {
-      if (currentMessage.toLowerCase().includes(question.toLowerCase())) {
+      if (lowerCaseMessage.includes(question.toLowerCase())) {
         responseContent = mockResponses[question]
           .replace("{contact}", hospital.contact || "our contact number")
           .replace("{address}", hospital.address || "our address");
         break;
       }
-    }
-    
-    if (
-      currentMessage.toLowerCase().includes("appointment") || 
-      currentMessage.toLowerCase().includes("booking") || 
-      currentMessage.toLowerCase().includes("schedule")
-    ) {
-      responseContent = `To book an appointment at ${hospital.name}, you can:\n
-1. Call us at ${hospital.contact}\n
-2. Visit our website at ${hospital.website}\n
-3. Email us at ${hospital.email}\n
-4. Use the Appointment tab on this page to book online\n
-The consultation fee starts at ₹${hospital.fees}. Would you like me to help you with anything specific about the booking process?`;
-    }
-    
-    if (
-      currentMessage.toLowerCase().includes("special") || 
-      currentMessage.toLowerCase().includes("department") || 
-      currentMessage.toLowerCase().includes("treatment")
-    ) {
-      responseContent = `${hospital.name} specializes in: ${hospital.specialties.join(", ")}. Which specific specialty are you interested in?`;
     }
     
     const botMessage: Message = {
@@ -225,7 +265,7 @@ The consultation fee starts at ₹${hospital.fees}. Would you like me to help yo
                     currentMessage={currentMessage}
                     onMessageChange={(e) => setCurrentMessage(e.target.value)}
                     onSendMessage={handleSendMessage}
-                    onMicInput={handleMicInput}
+                    onMicInput={toggleVoiceInput}
                     onKeyPress={handleKeyPress}
                     inputRef={inputRef}
                   />
