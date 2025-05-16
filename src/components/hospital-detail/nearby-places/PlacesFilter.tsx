@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Pill, Hotel, Utensils } from "lucide-react";
+import { Pill, Hotel, Utensils, MapPin } from "lucide-react";
 
 interface PlacesFilterProps {
   maxDistance: number;
@@ -31,7 +31,7 @@ export const PlacesFilter: React.FC<PlacesFilterProps> = ({
         <Slider
           value={[maxDistance]}
           min={1}
-          max={30}
+          max={100}
           step={1}
           onValueChange={(value) => setMaxDistance(value[0])}
           className="mt-2"
@@ -40,15 +40,15 @@ export const PlacesFilter: React.FC<PlacesFilterProps> = ({
       <div>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-4 w-full">
-            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="all" className="text-xs md:text-sm">All</TabsTrigger>
             <TabsTrigger value="pharmacies">
-              <Pill className="w-4 h-4 mr-1" />
+              <Pill className="w-4 h-4" />
             </TabsTrigger>
             <TabsTrigger value="hotels">
-              <Hotel className="w-4 h-4 mr-1" />
+              <Hotel className="w-4 h-4" />
             </TabsTrigger>
             <TabsTrigger value="food">
-              <Utensils className="w-4 h-4 mr-1" />
+              <Utensils className="w-4 h-4" />
             </TabsTrigger>
           </TabsList>
         </Tabs>

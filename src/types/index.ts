@@ -51,4 +51,10 @@ export interface NearbyPlace {
   rating: number;
   distance: number;
   address: string;
+  priceLevel?: string;
+  reviews?: string[];
+  images?: string[];
+  contact?: string;
+  openHours?: string;
+  amenities?: string[];
 }
