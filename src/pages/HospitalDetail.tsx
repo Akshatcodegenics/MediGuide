@@ -43,6 +43,7 @@ const HospitalDetail = () => {
   const [foodPlaces, setFoodPlaces] = useState<NearbyPlace[]>([]);
   const [activeTab, setActiveTab] = useState("info");
   const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("distance"); // New state for sorting
 
   useEffect(() => {
     if (id) {
