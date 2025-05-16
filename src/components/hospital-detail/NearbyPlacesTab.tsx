@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MapPin, Compass3D, Play, Pause } from "lucide-react";
+import { MapPin, Compass, Play, Pause } from "lucide-react";
 import { NearbyPlace } from "@/types";
 import { PlacesFilter } from "./nearby-places/PlacesFilter";
 import { PlacesList } from "./nearby-places/PlacesList";
@@ -193,7 +193,7 @@ export const NearbyPlacesTab: React.FC<NearbyPlacesTabProps> = ({
           >
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg">
               <div className="flex items-center">
-                <Compass3D className="w-6 h-6 text-purple-600 mr-2" />
+                <Compass className="w-6 h-6 text-purple-600 mr-2" />
                 <h2 className="text-lg font-semibold">3D Area Visualization</h2>
               </div>
               <p className="text-sm text-gray-600 mt-2">Explore the hospital surroundings in 3D. Use mouse to rotate and scroll to zoom.</p>
@@ -201,7 +201,7 @@ export const NearbyPlacesTab: React.FC<NearbyPlacesTabProps> = ({
             
             <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50 h-[500px] flex items-center justify-center">
               <div className="text-center">
-                <Compass3D className="w-16 h-16 text-purple-300 mx-auto mb-4" />
+                <Compass className="w-16 h-16 text-purple-300 mx-auto mb-4" />
                 <p className="text-gray-500">3D model visualization is loading...</p>
                 <p className="text-xs text-gray-400 mt-2">This feature is being prepared for the next update</p>
               </div>
@@ -212,3 +212,4 @@ export const NearbyPlacesTab: React.FC<NearbyPlacesTabProps> = ({
     </div>
   );
 };
+
