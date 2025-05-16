@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Hospital } from "@/types";
 import mapboxgl from 'mapbox-gl';
@@ -6,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Button } from "@/components/ui/button";
 import { Compass, Locate, Layers, MoveHorizontal, Navigation, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock locations for hospitals with more accurate coordinates
 const hospitalLocations: Record<number, {lat: number, lng: number}> = {
@@ -28,7 +28,10 @@ export const MapTab: React.FC<MapTabProps> = ({ hospital }) => {
   const [mapStyle, setMapStyle] = useState<string>('streets-v11');
   const [showNearby, setShowNearby] = useState<boolean>(false);
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [mapboxToken, setMapboxToken] = useState<string>("");
+  const [showTokenInput, setShowTokenInput] = useState<boolean>(true);
   const maxDistance = 100; // Maximum distance in kilometers
+  const { toast } = useToast();
   
   const styles = {
     'streets-v11': 'Street View',
@@ -41,98 +44,154 @@ export const MapTab: React.FC<MapTabProps> = ({ hospital }) => {
   const searchParams = new URLSearchParams(window.location.search);
   const isMapTabLink = searchParams.get('mapTabLink') === 'true';
 
-  useEffect(() => {
+  const initializeMap = () => {
+    if (!mapboxToken.trim()) {
+      toast({
+        title: "Map Token Required",
+        description: "Please enter your Mapbox token to view the map.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (mapContainer.current && !map.current) {
       const location = hospitalLocations[hospital.id] || { lat: 28.6139, lng: 77.2090 };
       
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: `mapbox://styles/mapbox/${mapStyle}`,
-        center: [location.lng, location.lat],
-        zoom: 13, // Increased zoom level for better visibility
-        pitchWithRotate: true,
-        pitch: 50, // Added pitch for better 3D view
-      });
-
-      // Add navigation controls with more options
-      map.current.addControl(
-        new mapboxgl.NavigationControl({
-          visualizePitch: true,
-          showZoom: true,
-          showCompass: true
-        }), 
-        'bottom-right'
-      );
-
-      // Add scale control
-      map.current.addControl(new mapboxgl.ScaleControl(), 'bottom-left');
+      // Set the token
+      mapboxgl.accessToken = mapboxToken;
       
-      // Add marker for the hospital with custom popup
-      const popupContent = `
-        <div class="bg-white p-3 rounded-lg shadow-lg">
-          <h3 class="font-bold text-purple-600 mb-1">${hospital.name}</h3>
-          <p class="text-sm text-gray-600">${hospital.address || 'Address not available'}</p>
-          ${hospital.contact ? `<p class="text-sm text-blue-600 mt-1">${hospital.contact}</p>` : ''}
-          <div class="mt-2">
-            <button class="text-xs bg-purple-600 text-white px-2 py-1 rounded">Book Appointment</button>
+      try {
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: `mapbox://styles/mapbox/${mapStyle}`,
+          center: [location.lng, location.lat],
+          zoom: 13, // Increased zoom level for better visibility
+          pitchWithRotate: true,
+          pitch: 50, // Added pitch for better 3D view
+        });
+
+        // Add navigation controls with more options
+        map.current.addControl(
+          new mapboxgl.NavigationControl({
+            visualizePitch: true,
+            showZoom: true,
+            showCompass: true
+          }), 
+          'bottom-right'
+        );
+
+        // Add scale control
+        map.current.addControl(new mapboxgl.ScaleControl(), 'bottom-left');
+        
+        // Add marker for the hospital with custom popup
+        const popupContent = `
+          <div class="bg-white p-3 rounded-lg shadow-lg">
+            <h3 class="font-bold text-purple-600 mb-1">${hospital.name}</h3>
+            <p class="text-sm text-gray-600">${hospital.address || 'Address not available'}</p>
+            ${hospital.contact ? `<p class="text-sm text-blue-600 mt-1">${hospital.contact}</p>` : ''}
+            <div class="mt-2">
+              <button class="text-xs bg-purple-600 text-white px-2 py-1 rounded">Book Appointment</button>
+            </div>
           </div>
-        </div>
-      `;
-      
-      const popup = new mapboxgl.Popup({
-        offset: 25,
-        closeButton: false,
-        className: 'custom-popup'
-      }).setHTML(popupContent);
-      
-      new mapboxgl.Marker({ 
-        color: "#8b5cf6",
-        scale: 1.5 // Larger marker for better visibility
-      })
-        .setLngLat([location.lng, location.lat])
-        .setPopup(popup)
-        .addTo(map.current);
-      
-      map.current.on('load', () => {
-        setMapLoaded(true);
+        `;
         
-        if (isMapTabLink) {
-          setShowNearby(true);
-        }
+        const popup = new mapboxgl.Popup({
+          offset: 25,
+          closeButton: false,
+          className: 'custom-popup'
+        }).setHTML(popupContent);
         
-        // Add 3D buildings for more visual appeal
-        if (map.current) {
-          map.current.addLayer({
-            'id': '3d-buildings',
-            'source': 'composite',
-            'source-layer': 'building',
-            'filter': ['==', 'extrude', 'true'],
-            'type': 'fill-extrusion',
-            'minzoom': 12,
-            'paint': {
-              'fill-extrusion-color': '#aaa',
-              'fill-extrusion-height': [
-                'interpolate', ['linear'], ['zoom'],
-                15, 0,
-                15.05, ['get', 'height']
-              ],
-              'fill-extrusion-base': [
-                'interpolate', ['linear'], ['zoom'],
-                15, 0,
-                15.05, ['get', 'min_height']
-              ],
-              'fill-extrusion-opacity': 0.6
-            }
+        new mapboxgl.Marker({ 
+          color: "#8b5cf6",
+          scale: 1.5 // Larger marker for better visibility
+        })
+          .setLngLat([location.lng, location.lat])
+          .setPopup(popup)
+          .addTo(map.current);
+        
+        map.current.on('load', () => {
+          setMapLoaded(true);
+          setShowTokenInput(false);
+          toast({
+            title: "Map loaded successfully!",
+            description: "You can now explore the hospital location and nearby places.",
+            variant: "default"
           });
-        }
-      });
+          
+          if (isMapTabLink) {
+            setShowNearby(true);
+          }
+          
+          // Add 3D buildings for more visual appeal
+          if (map.current) {
+            map.current.addLayer({
+              'id': '3d-buildings',
+              'source': 'composite',
+              'source-layer': 'building',
+              'filter': ['==', 'extrude', 'true'],
+              'type': 'fill-extrusion',
+              'minzoom': 12,
+              'paint': {
+                'fill-extrusion-color': '#aaa',
+                'fill-extrusion-height': [
+                  'interpolate', ['linear'], ['zoom'],
+                  15, 0,
+                  15.05, ['get', 'height']
+                ],
+                'fill-extrusion-base': [
+                  'interpolate', ['linear'], ['zoom'],
+                  15, 0,
+                  15.05, ['get', 'min_height']
+                ],
+                'fill-extrusion-opacity': 0.6
+              }
+            });
+          }
+        });
+
+        // Handle map error
+        map.current.on('error', (e) => {
+          console.error("Mapbox error:", e);
+          toast({
+            title: "Map error occurred",
+            description: "There was an issue loading the map. Please check your token and try again.",
+            variant: "destructive"
+          });
+        });
+
+      } catch (error) {
+        console.error("Error initializing map:", error);
+        toast({
+          title: "Map initialization failed",
+          description: "There was a problem creating the map. Please try again.",
+          variant: "destructive"
+        });
+      }
+    }
+  };
+  
+  useEffect(() => {
+    // Check for stored token in localStorage
+    const storedToken = localStorage.getItem('mapbox_token');
+    if (storedToken) {
+      setMapboxToken(storedToken);
+      setShowTokenInput(false);
+      setTimeout(() => {
+        initializeMap();
+      }, 100);
     }
     
     return () => {
       map.current?.remove();
       map.current = null;
     };
-  }, [hospital, mapStyle]);
+  }, []);
+  
+  useEffect(() => {
+    if (map.current && mapStyle) {
+      map.current.setStyle(`mapbox://styles/mapbox/${mapStyle}`);
+    }
+  }, [mapStyle]);
   
   useEffect(() => {
     if (!map.current || !showNearby || !mapLoaded) return;
@@ -341,6 +400,15 @@ export const MapTab: React.FC<MapTabProps> = ({ hospital }) => {
     });
   };
   
+  const handleTokenSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mapboxToken.trim()) {
+      // Store token in localStorage for convenience
+      localStorage.setItem('mapbox_token', mapboxToken);
+      initializeMap();
+    }
+  };
+  
   return (
     <motion.div 
       className="space-y-4"
@@ -359,88 +427,119 @@ export const MapTab: React.FC<MapTabProps> = ({ hospital }) => {
         </p>
       </div>
       
-      <div className="flex flex-wrap gap-2 mb-4">
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => setShowNearby(!showNearby)}
-          className={showNearby ? "bg-blue-100" : ""}
+      {showTokenInput && (
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-4"
         >
-          <Compass className="mr-2 h-4 w-4" />
-          {showNearby ? "Hide Nearby Places" : "Show Nearby Places"}
-        </Button>
-        
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={findNearbyHospitals}
-        >
-          <MoveHorizontal className="mr-2 h-4 w-4" />
-          Nearby Hospitals
-        </Button>
-        
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => {
-            if (map.current) {
-              const location = hospitalLocations[hospital.id] || { lat: 28.6139, lng: 77.2090 };
-              map.current.flyTo({
-                center: [location.lng, location.lat],
-                zoom: 15,
-                essential: true,
-                pitch: 60,
-                bearing: 30,
-              });
-            }
-          }}
-        >
-          <Locate className="mr-2 h-4 w-4" />
-          Reset View
-        </Button>
-        
-        <div className="relative ml-auto">
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => {
-              const dropdown = document.getElementById('map-style-dropdown');
-              if (dropdown) {
-                dropdown.classList.toggle('hidden');
-              }
-            }}
-          >
-            <Layers className="mr-2 h-4 w-4" />
-            Map Style
-          </Button>
-          <div id="map-style-dropdown" className="hidden absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 border">
-            <div className="py-1">
-              {Object.entries(styles).map(([styleId, styleName]) => (
-                <button
-                  key={styleId}
-                  className={`block px-4 py-2 text-sm text-left w-full hover:bg-gray-100 ${mapStyle === styleId ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}`}
-                  onClick={() => {
-                    changeMapStyle(styleId);
-                    document.getElementById('map-style-dropdown')?.classList.add('hidden');
-                  }}
-                >
-                  {styleName}
-                </button>
-              ))}
+          <h3 className="text-lg font-medium mb-2">Mapbox API Token Required</h3>
+          <p className="text-sm text-gray-600 mb-3">
+            To view the interactive map, please enter your Mapbox public token below.
+            You can get one for free at <a href="https://mapbox.com" target="_blank" rel="noreferrer" className="text-blue-600 underline">mapbox.com</a>.
+          </p>
+          <form onSubmit={handleTokenSubmit} className="flex flex-col space-y-2">
+            <input
+              type="text"
+              value={mapboxToken}
+              onChange={(e) => setMapboxToken(e.target.value)}
+              placeholder="Enter your Mapbox public token"
+              className="px-4 py-2 border border-gray-300 rounded-md"
+              required
+            />
+            <Button type="submit" className="w-full">
+              Load Map
+            </Button>
+          </form>
+        </motion.div>
+      )}
+      
+      {!showTokenInput && (
+        <>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowNearby(!showNearby)}
+              className={showNearby ? "bg-blue-100" : ""}
+            >
+              <Compass className="mr-2 h-4 w-4" />
+              {showNearby ? "Hide Nearby Places" : "Show Nearby Places"}
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={findNearbyHospitals}
+            >
+              <MoveHorizontal className="mr-2 h-4 w-4" />
+              Nearby Hospitals
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                if (map.current) {
+                  const location = hospitalLocations[hospital.id] || { lat: 28.6139, lng: 77.2090 };
+                  map.current.flyTo({
+                    center: [location.lng, location.lat],
+                    zoom: 15,
+                    essential: true,
+                    pitch: 60,
+                    bearing: 30,
+                  });
+                }
+              }}
+            >
+              <Locate className="mr-2 h-4 w-4" />
+              Reset View
+            </Button>
+            
+            <div className="relative ml-auto">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  const dropdown = document.getElementById('map-style-dropdown');
+                  if (dropdown) {
+                    dropdown.classList.toggle('hidden');
+                  }
+                }}
+              >
+                <Layers className="mr-2 h-4 w-4" />
+                Map Style
+              </Button>
+              <div id="map-style-dropdown" className="hidden absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 border">
+                <div className="py-1">
+                  {Object.entries(styles).map(([styleId, styleName]) => (
+                    <button
+                      key={styleId}
+                      className={`block px-4 py-2 text-sm text-left w-full hover:bg-gray-100 ${mapStyle === styleId ? 'bg-blue-50 text-blue-700' : 'text-gray-700'}`}
+                      onClick={() => {
+                        changeMapStyle(styleId);
+                        document.getElementById('map-style-dropdown')?.classList.add('hidden');
+                      }}
+                    >
+                      {styleName}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      
-      <div 
-        ref={mapContainer} 
-        className="h-[550px] rounded-lg shadow-md overflow-hidden border border-gray-200" 
-      />
-      
-      <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
-        <span>Use two fingers to zoom and pan</span>
-        <span>Map data © Mapbox</span>
-      </div>
+          
+          <div 
+            ref={mapContainer} 
+            className="h-[550px] rounded-lg shadow-md overflow-hidden border border-gray-200" 
+          />
+          
+          <div className="flex justify-between items-center text-sm text-gray-500 mt-2">
+            <span>Use two fingers to zoom and pan</span>
+            <span>Map data © Mapbox</span>
+          </div>
+        </>
+      )}
     </motion.div>
   );
 };

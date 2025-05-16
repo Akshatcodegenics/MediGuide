@@ -11,6 +11,7 @@ import { SuggestedQuestions } from './SuggestedQuestions';
 import { supportedLanguages, predefinedQuestions } from '../constants/chatData';
 import { useChatState } from '@/hooks/useChatState';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ChatContainerProps {
   hospital: Hospital;
@@ -125,11 +126,13 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({ hospital }) => {
                     onLanguageChange={handleLanguageChange}
                   />
                   
-                  <ChatMessages
-                    messages={messages}
-                    isTyping={isTyping}
-                    formatTime={formatTime}
-                  />
+                  <ScrollArea className="flex-1 px-1">
+                    <ChatMessages
+                      messages={messages}
+                      isTyping={isTyping}
+                      formatTime={formatTime}
+                    />
+                  </ScrollArea>
                   
                   <SuggestedQuestions
                     questions={predefinedQuestions}
