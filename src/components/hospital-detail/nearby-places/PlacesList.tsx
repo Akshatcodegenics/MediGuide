@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Pill, Hotel, Utensils, MapPin3D } from "lucide-react";
+import { Pill, Hotel, Utensils, MapPin } from "lucide-react";
 import { NearbyPlace } from "@/types";
 import { PlaceCard } from "./PlaceCard";
 
@@ -95,7 +95,7 @@ export const PlacesList: React.FC<PlacesListProps> = ({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <MapPin3D className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+          <MapPin className="w-10 h-10 text-gray-300 mx-auto mb-3" />
           <p className="text-gray-500">No {title.toLowerCase()} found within the selected distance.</p>
           <p className="text-gray-400 text-sm">Try increasing the distance to see more results.</p>
         </motion.div>

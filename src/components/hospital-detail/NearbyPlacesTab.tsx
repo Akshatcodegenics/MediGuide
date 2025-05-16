@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MapPin, Compass, Play, Pause, MapPin3D } from "lucide-react";
+import { MapPin, Compass, Play, Pause } from "lucide-react";
 import { NearbyPlace } from "@/types";
 import { PlacesFilter } from "./nearby-places/PlacesFilter";
 import { PlacesList } from "./nearby-places/PlacesList";
@@ -157,7 +157,7 @@ export const NearbyPlacesTab: React.FC<NearbyPlacesTabProps> = ({
       {/* 3D Visual Animation Section */}
       <div className="bg-gradient-to-r from-gray-900 to-blue-900 p-6 rounded-lg text-white mt-8">
         <h3 className="text-xl font-bold mb-4 flex items-center">
-          <MapPin3D className="w-6 h-6 mr-2" />
+          <MapPin className="w-6 h-6 mr-2" />
           3D Area Visualization
         </h3>
         
