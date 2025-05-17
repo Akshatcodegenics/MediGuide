@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getHospitalById, getNearbyPlaces } from "@/data/hospitals";
@@ -5,7 +6,7 @@ import { Hospital, NearbyPlace } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, Image, Box } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -17,7 +18,6 @@ import { MapTab } from "@/components/hospital-detail/MapTab";
 import { NearbyPlacesTab } from "@/components/hospital-detail/NearbyPlacesTab";
 import { SidebarInfo } from "@/components/hospital-detail/SidebarInfo";
 import { AIChatAssistant } from "@/components/hospital-detail/AIChatAssistant";
-import { Hospital3DView } from "@/components/hospital-detail/visualization/Hospital3DView";
 
 // Animation variants
 const containerVariants = {
@@ -96,13 +96,8 @@ const HospitalDetail = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <div className="relative h-16 w-16 mx-auto">
-            <div className="absolute inset-0 rounded-full border-4 border-t-purple-500 border-r-transparent border-b-blue-500 border-l-transparent animate-spin"></div>
-            <div className="absolute inset-3 rounded-full border-2 border-t-blue-300 border-r-transparent border-b-purple-300 border-l-transparent animate-spin"></div>
-            <Box className="absolute inset-0 h-full w-full text-blue-600 animate-pulse" />
-          </div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading hospital details...</p>
-          <p className="text-xs text-gray-400 mt-1 animate-pulse">Retrieving 3D models and information...</p>
         </div>
       </div>
     );
@@ -184,11 +179,6 @@ const HospitalDetail = () => {
         
         <motion.div variants={itemVariants} className="col-span-1">
           <SidebarInfo hospital={hospital} />
-          
-          {/* Add the 3D visualization */}
-          <div className="mt-6">
-            <Hospital3DView hospital={hospital} />
-          </div>
         </motion.div>
       </motion.div>
       
