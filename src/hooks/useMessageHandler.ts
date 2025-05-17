@@ -1,7 +1,103 @@
-
 import { Hospital } from '@/types';
 import { Message } from '@/components/hospital-detail/types/chat';
 import { mockResponses } from '@/components/hospital-detail/constants/chatData';
+
+// Medical specialties mapping for symptom analysis
+const symptomToSpecialty: Record<string, string[]> = {
+  // Heart related
+  "chest pain": ["Cardiology", "Emergency Medicine"],
+  "heart palpitations": ["Cardiology"],
+  "shortness of breath": ["Cardiology", "Pulmonology"],
+  "high blood pressure": ["Cardiology", "Internal Medicine"],
+  
+  // Digestive system
+  "stomach pain": ["Gastroenterology"],
+  "indigestion": ["Gastroenterology"],
+  "nausea": ["Gastroenterology", "General Medicine"],
+  "vomiting": ["Gastroenterology", "Emergency Medicine"],
+  "diarrhea": ["Gastroenterology"],
+  "constipation": ["Gastroenterology"],
+  
+  // Respiratory
+  "cough": ["Pulmonology", "ENT"],
+  "sore throat": ["ENT", "General Medicine"],
+  "runny nose": ["ENT", "Allergy and Immunology"],
+  "difficulty breathing": ["Pulmonology", "Emergency Medicine"],
+  
+  // Musculoskeletal
+  "joint pain": ["Orthopedics", "Rheumatology"],
+  "back pain": ["Orthopedics", "Neurology"],
+  "muscle pain": ["Orthopedics", "Physical Therapy"],
+  
+  // Neurological
+  "headache": ["Neurology"],
+  "migraine": ["Neurology"],
+  "dizziness": ["Neurology", "ENT"],
+  "memory problems": ["Neurology", "Psychiatry"],
+  
+  // Mental health
+  "depression": ["Psychiatry", "Psychology"],
+  "anxiety": ["Psychiatry", "Psychology"],
+  "stress": ["Psychiatry", "Psychology"],
+  "mood swings": ["Psychiatry"],
+  "insomnia": ["Psychiatry", "Sleep Medicine"],
+  
+  // Skin
+  "rash": ["Dermatology", "Allergy and Immunology"],
+  "skin infection": ["Dermatology"],
+  "acne": ["Dermatology"],
+  
+  // Eye
+  "blurry vision": ["Ophthalmology"],
+  "eye pain": ["Ophthalmology"],
+  "red eye": ["Ophthalmology"],
+  
+  // General
+  "fever": ["General Medicine", "Infectious Disease"],
+  "fatigue": ["General Medicine", "Endocrinology"],
+  "weight loss": ["Endocrinology", "Gastroenterology"],
+  "weight gain": ["Endocrinology", "Nutrition"],
+  
+  // Women's health
+  "menstrual pain": ["Gynecology"],
+  "pregnancy": ["Obstetrics and Gynecology"],
+  "breast pain": ["Gynecology", "Oncology"],
+  
+  // Urinary
+  "urinary problems": ["Urology", "Nephrology"],
+  "kidney pain": ["Nephrology", "Urology"],
+  
+  // Children
+  "childhood illness": ["Pediatrics"],
+  "vaccination": ["Pediatrics", "Preventive Medicine"],
+  
+  // Ear, nose, and throat
+  "ear pain": ["ENT"],
+  "hearing loss": ["ENT", "Audiology"],
+  
+  // Other
+  "diabetes": ["Endocrinology"],
+  "allergy": ["Allergy and Immunology"],
+  "vaccination": ["Preventive Medicine"]
+};
+
+// Common first aid and precautions
+const firstAidAdvice: Record<string, string> = {
+  "fever": "Take rest, stay hydrated, and use a cold compress if temperature is high. Take paracetamol if needed after consulting with a healthcare provider.",
+  "headache": "Rest in a quiet, dark room. Apply a cold or warm compress to your forehead or neck. Stay hydrated and avoid triggers like loud sounds and bright lights.",
+  "cuts": "Clean the wound with soap and water, apply pressure to stop bleeding, apply an antiseptic, and cover with a sterile bandage.",
+  "burns": "Run cool (not cold) water over the burn for 10-15 minutes. Do not apply ice directly. Cover with a clean, dry cloth.",
+  "sprains": "Remember RICE: Rest, Ice, Compression, and Elevation. Avoid putting weight on the injured area.",
+  "fractures": "Immobilize the area, apply ice to reduce swelling, and seek immediate medical attention.",
+  "choking": "Perform the Heimlich maneuver if someone is choking and unable to speak.",
+  "heart attack": "Call emergency services immediately. Have the person sit down and rest while waiting for help.",
+  "stroke": "Remember FAST: Face drooping, Arm weakness, Speech difficulty, Time to call emergency services.",
+  "poisoning": "Call poison control immediately. Do not induce vomiting unless instructed by medical professionals.",
+  "dehydration": "Drink small amounts of water frequently. For severe dehydration, oral rehydration solutions are recommended.",
+  "heat exhaustion": "Move to a cooler place, drink water, and apply cool compresses.",
+  "allergic reaction": "Remove the allergen if possible. For severe reactions with difficulty breathing, seek emergency help immediately.",
+  "insect bites": "Clean the area, apply a cold compress to reduce swelling, and use anti-itch cream if needed."
+};
 
 const enhancedResponses: Record<string, string[]> = {
   "treatments": [
@@ -68,6 +164,22 @@ const enhancedResponses: Record<string, string[]> = {
     "{hospital} offers interpretation services for patients who speak languages other than English.",
     "Our staff at {hospital} includes professionals fluent in multiple languages to assist diverse patient populations.",
     "For language assistance at {hospital}, please inform the reception desk when scheduling your appointment."
+  ],
+  // Added more location-specific responses for cities across India
+  "locations": [
+    "We have partner hospitals across India including in non-metro cities like Noida, Gorakhpur, Patna, Lucknow, Jaipur, and many more.",
+    "Our healthcare network extends to over 100 cities across India, including tier-2 and tier-3 cities.",
+    "You can find quality healthcare in your city through our network of affiliated hospitals and clinics throughout India."
+  ],
+  "tier2cities": [
+    "We provide comprehensive healthcare services in tier-2 cities like Bhopal, Indore, Kanpur, Lucknow, Nagpur, Vadodara, and many others.",
+    "Our hospital network includes facilities in growing cities like Varanasi, Patna, Ranchi, Raipur, and Visakhapatnam.",
+    "Quality healthcare is available through our partner hospitals in cities like Allahabad, Jalandhar, Ludhiana, and Chandigarh."
+  ],
+  "tier3cities": [
+    "We ensure healthcare access in smaller cities like Gorakhpur, Siliguri, Jammu, Jodhpur, and similar tier-3 cities across India.",
+    "Our affiliated medical facilities serve patients in places like Aligarh, Moradabad, Saharanpur, and other developing urban areas.",
+    "Through our network, patients can access specialized care in cities like Bareilly, Tirupati, Ajmer, and similar locations."
   ]
 };
 
@@ -88,10 +200,148 @@ export const useMessageHandler = (hospital: Hospital) => {
       .replace(/\{doctorCount\}/g, (hospital.id * 10 + 5).toString()); // Mock doctor count based on hospital ID
   };
 
+  // Analyze symptoms and recommend specialists
+  const analyzeSymptoms = (symptoms: string): string => {
+    const lowerSymptoms = symptoms.toLowerCase();
+    const detectedSymptoms: string[] = [];
+    const recommendedSpecialties = new Set<string>();
+    let firstAidRecommendation = "";
+    
+    // Detect symptoms from the user input
+    for (const symptom of Object.keys(symptomToSpecialty)) {
+      if (lowerSymptoms.includes(symptom)) {
+        detectedSymptoms.push(symptom);
+        
+        // Add corresponding specialties
+        for (const specialty of symptomToSpecialty[symptom]) {
+          recommendedSpecialties.add(specialty);
+        }
+        
+        // Check if we have first aid advice for this symptom
+        for (const condition of Object.keys(firstAidAdvice)) {
+          if (symptom.includes(condition) || condition.includes(symptom)) {
+            firstAidRecommendation = firstAidAdvice[condition];
+            break;
+          }
+        }
+      }
+    }
+    
+    // If no symptoms detected
+    if (detectedSymptoms.length === 0) {
+      return "I couldn't identify specific symptoms from your description. Please describe your symptoms more clearly, such as 'headache', 'stomach pain', or 'fever'.";
+    }
+    
+    // Create response
+    let response = `Based on your described symptoms (${detectedSymptoms.join(", ")}), I would recommend consulting with the following specialists:\n\n`;
+    
+    response += Array.from(recommendedSpecialties).map(specialty => `- ${specialty}`).join('\n');
+    
+    // Add first aid advice if available
+    if (firstAidRecommendation) {
+      response += `\n\n**First Aid/Precautions:**\n${firstAidRecommendation}`;
+    }
+    
+    response += `\n\nPlease note: This is not a substitute for professional medical advice. If you're experiencing severe symptoms, please seek immediate medical attention.`;
+    
+    // Check if hospital has any of the recommended specialties
+    const matchingSpecialties = hospital.specialties.filter(s => 
+      Array.from(recommendedSpecialties).some(r => 
+        s.toLowerCase().includes(r.toLowerCase())
+      )
+    );
+    
+    if (matchingSpecialties.length > 0) {
+      response += `\n\nGood news! ${hospital.name} offers services in ${matchingSpecialties.join(", ")}. Would you like to schedule an appointment?`;
+    }
+    
+    return response;
+  };
+
+  // Analyze mood from text
+  const analyzeMood = (text: string): string => {
+    const lowerText = text.toLowerCase();
+    
+    // Simple mood detection patterns
+    const moodPatterns = {
+      anxious: ["anxious", "worried", "nervous", "anxiety", "panic", "stress", "stressed"],
+      sad: ["sad", "unhappy", "depressed", "depression", "down", "blue", "upset", "grief"],
+      angry: ["angry", "frustrated", "annoyed", "mad", "irritated", "furious"],
+      happy: ["happy", "good", "great", "excellent", "wonderful", "fantastic"],
+      fearful: ["afraid", "scared", "frightened", "terrified", "fear"],
+      tired: ["tired", "exhausted", "fatigue", "sleepy", "drowsy", "lethargic"]
+    };
+    
+    // Check for mood indicators
+    for (const [mood, indicators] of Object.entries(moodPatterns)) {
+      for (const indicator of indicators) {
+        if (lowerText.includes(indicator)) {
+          switch(mood) {
+            case "anxious":
+              return "I notice you might be feeling anxious. Anxiety can affect your physical health too. Consider speaking with a mental health professional along with addressing your physical symptoms.";
+            case "sad":
+              return "I sense you might be feeling down. Your emotional wellbeing is just as important as your physical health. I'd recommend considering both as you seek medical care.";
+            case "angry":
+              return "I understand you might be frustrated. It's important to address both your physical symptoms and any stress you're experiencing.";
+            case "happy":
+              return "I'm glad to hear you're in good spirits despite not feeling well physically. A positive outlook can help with recovery!";
+            case "fearful":
+              return "It seems you might be concerned or scared about your symptoms. This is completely natural, but remember that getting proper medical advice is the best way to address health concerns.";
+            case "tired":
+              return "You seem to be experiencing fatigue. Rest is important, but persistent tiredness can also be a symptom that should be evaluated by a healthcare professional.";
+          }
+        }
+      }
+    }
+    
+    return "";
+  };
+
   const generateResponse = (currentMessage: string): string => {
     let responseContent = "I'm not sure about that. Can you ask something else about the hospital or booking appointments?";
     
     const lowerCaseMessage = currentMessage.toLowerCase();
+    
+    // Check for mood and symptoms analysis request
+    if (lowerCaseMessage.includes("analyze") || 
+        lowerCaseMessage.includes("symptom") || 
+        lowerCaseMessage.includes("feel") || 
+        lowerCaseMessage.includes("experiencing") ||
+        lowerCaseMessage.includes("suffering") ||
+        lowerCaseMessage.includes("pain") ||
+        lowerCaseMessage.includes("ache")) {
+      
+      const moodAnalysis = analyzeMood(currentMessage);
+      const symptomAnalysis = analyzeSymptoms(currentMessage);
+      
+      if (moodAnalysis && symptomAnalysis) {
+        return `${moodAnalysis}\n\n${symptomAnalysis}`;
+      } else if (symptomAnalysis) {
+        return symptomAnalysis;
+      } else if (moodAnalysis) {
+        return `${moodAnalysis}\n\nCould you please describe any physical symptoms you're experiencing so I can provide better guidance?`;
+      }
+    }
+    
+    // Check for non-metro city queries
+    if (lowerCaseMessage.includes("noida") || 
+        lowerCaseMessage.includes("gorakhpur") || 
+        lowerCaseMessage.includes("tier 2") ||
+        lowerCaseMessage.includes("tier 3") ||
+        lowerCaseMessage.includes("small city") ||
+        lowerCaseMessage.includes("non-metro") ||
+        lowerCaseMessage.includes("non metro")) {
+      
+      if (lowerCaseMessage.includes("tier 3") || lowerCaseMessage.includes("small")) {
+        responseContent = formatResponse(getRandomResponse("tier3cities"));
+      } else if (lowerCaseMessage.includes("tier 2")) {
+        responseContent = formatResponse(getRandomResponse("tier2cities"));
+      } else {
+        responseContent = formatResponse(getRandomResponse("locations"));
+      }
+      
+      return responseContent;
+    }
     
     // Check for contextual queries
     if (lowerCaseMessage.includes('suggest') || lowerCaseMessage.includes('recommend')) {
@@ -105,7 +355,7 @@ Would you like more specific information about any of these hospitals?`);
     
     // Check for greetings
     if (/^(hi|hello|hey|greetings)/i.test(lowerCaseMessage.trim())) {
-      return formatResponse(`Hello there! 👋 Welcome to ${hospital.name}'s AI assistant. How may I help you today? You can ask about our services, doctors, booking appointments, or facilities.`);
+      return formatResponse(`Hello there! 👋 Welcome to ${hospital.name}'s AI assistant. How may I help you today? You can ask about our services, doctors, booking appointments, facilities, or describe your symptoms for specialist recommendations.`);
     }
     
     // Check for thanks
