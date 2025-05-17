@@ -69,7 +69,6 @@ const symptomToSpecialty: Record<string, string[]> = {
   
   // Children
   "childhood illness": ["Pediatrics"],
-  "vaccination": ["Pediatrics", "Preventive Medicine"],
   
   // Ear, nose, and throat
   "ear pain": ["ENT"],
