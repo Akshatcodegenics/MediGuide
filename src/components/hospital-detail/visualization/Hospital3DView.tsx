@@ -46,6 +46,9 @@ export const Hospital3DView: React.FC<Hospital3DViewProps> = ({ hospital }) => {
   const toggleAnimation = () => {
     setIsPlaying(!isPlaying);
   };
+
+  // Calculate a year founded since it doesn't exist in the Hospital type
+  const calculatedYearFounded = new Date().getFullYear() - Math.floor(Math.random() * 50);
   
   return (
     <motion.div 
@@ -135,7 +138,7 @@ export const Hospital3DView: React.FC<Hospital3DViewProps> = ({ hospital }) => {
       <div className="grid grid-cols-3 gap-2 mt-4">
         <div className="bg-white/10 backdrop-blur-sm p-2 rounded-lg">
           <h4 className="text-xs font-medium text-blue-200">Established</h4>
-          <p className="text-sm font-bold">{new Date().getFullYear() - Math.floor(Math.random() * 50)}</p>
+          <p className="text-sm font-bold">{calculatedYearFounded}</p>
         </div>
         <div className="bg-white/10 backdrop-blur-sm p-2 rounded-lg">
           <h4 className="text-xs font-medium text-blue-200">Departments</h4>
