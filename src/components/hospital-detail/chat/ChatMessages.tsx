@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Bot, AlertTriangle, Image, Cube } from "lucide-react";
+import { Bot, AlertTriangle, Image, Box } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Message } from "../types/chat";
 
@@ -156,7 +155,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
               {formatTime(message.timestamp)}
               {message.sender === 'bot' && 
                 <span className="ml-2 inline-flex items-center">
-                  <Cube size={10} className="text-blue-400 mr-1" />
+                  <Box size={10} className="text-blue-400 mr-1" />
                   <span className="text-xs text-blue-400">AI</span>
                 </span>
               }

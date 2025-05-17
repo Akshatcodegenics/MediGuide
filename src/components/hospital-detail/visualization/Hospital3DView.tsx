@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Cube, Image, Play, Pause } from "lucide-react";
+import { Box, Image, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Hospital } from "@/types";
 
@@ -56,7 +56,7 @@ export const Hospital3DView: React.FC<Hospital3DViewProps> = ({ hospital }) => {
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold flex items-center">
-          <Cube className="w-6 h-6 mr-2" />
+          <Box className="w-6 h-6 mr-2" />
           3D Hospital Visualization
         </h3>
         
@@ -135,11 +135,11 @@ export const Hospital3DView: React.FC<Hospital3DViewProps> = ({ hospital }) => {
       <div className="grid grid-cols-3 gap-2 mt-4">
         <div className="bg-white/10 backdrop-blur-sm p-2 rounded-lg">
           <h4 className="text-xs font-medium text-blue-200">Established</h4>
-          <p className="text-sm font-bold">{hospital.yearFounded || new Date().getFullYear() - Math.floor(Math.random() * 50)}</p>
+          <p className="text-sm font-bold">{new Date().getFullYear() - Math.floor(Math.random() * 50)}</p>
         </div>
         <div className="bg-white/10 backdrop-blur-sm p-2 rounded-lg">
           <h4 className="text-xs font-medium text-blue-200">Departments</h4>
-          <p className="text-sm font-bold">{hospital.specializations?.length || Math.floor(Math.random() * 15) + 5}</p>
+          <p className="text-sm font-bold">{hospital.specialties?.length || Math.floor(Math.random() * 15) + 5}</p>
         </div>
         <div className="bg-white/10 backdrop-blur-sm p-2 rounded-lg">
           <h4 className="text-xs font-medium text-blue-200">Rating</h4>
@@ -150,12 +150,14 @@ export const Hospital3DView: React.FC<Hospital3DViewProps> = ({ hospital }) => {
         </div>
       </div>
       
-      <style jsx>{`
+      <style>
+        {`
         @keyframes float {
           0%, 100% { transform: translateY(0) scale(1); }
           50% { transform: translateY(-15px) scale(1.2); }
         }
-      `}</style>
+        `}
+      </style>
     </motion.div>
   );
 };

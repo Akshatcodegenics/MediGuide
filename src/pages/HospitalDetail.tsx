@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getHospitalById, getNearbyPlaces } from "@/data/hospitals";
@@ -6,7 +5,7 @@ import { Hospital, NearbyPlace } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, Image, Cube } from "lucide-react";
+import { ChevronLeft, Image, Box } from "lucide-react";
 import { motion } from "framer-motion";
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -100,7 +99,7 @@ const HospitalDetail = () => {
           <div className="relative h-16 w-16 mx-auto">
             <div className="absolute inset-0 rounded-full border-4 border-t-purple-500 border-r-transparent border-b-blue-500 border-l-transparent animate-spin"></div>
             <div className="absolute inset-3 rounded-full border-2 border-t-blue-300 border-r-transparent border-b-purple-300 border-l-transparent animate-spin"></div>
-            <Cube className="absolute inset-0 h-full w-full text-blue-600 animate-pulse" />
+            <Box className="absolute inset-0 h-full w-full text-blue-600 animate-pulse" />
           </div>
           <p className="mt-4 text-gray-600">Loading hospital details...</p>
           <p className="text-xs text-gray-400 mt-1 animate-pulse">Retrieving 3D models and information...</p>
